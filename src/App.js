@@ -13,7 +13,8 @@ import Loading from "./components/Loading";
 import "bootstrap/scss/bootstrap.scss";
 import "./styles/main.scss";
 
-const socket = io.connect(process.env.REACT_APP_API_URI);
+// const socket = io.connect(process.env.REACT_APP_API_URI);
+const socket = io.connect("https://realtime-chatserver.herokuapp.com/");
 
 console.log(process.env.NODE_ENV)
 
