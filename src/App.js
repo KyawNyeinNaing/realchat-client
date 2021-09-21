@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
-import styled from "styled-components";
+import styled, {
+  css,
+  ThemeProvider as StyledThemeProvider,
+} from "styled-components";
 import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -13,10 +16,19 @@ import Loading from "./components/Loading";
 import "bootstrap/scss/bootstrap.scss";
 import "./styles/main.scss";
 
-// const socket = io.connect(process.env.REACT_APP_API_URI);
-const socket = io.connect("https://realtime-chatserver.herokuapp.com/");
+const socket = io.connect(process.env.REACT_APP_API_URI);
+// const socket = io.connect("https://realtime-chatserver.herokuapp.com/");
 
-console.log(process.env.NODE_ENV)
+const styledTheme = {
+  media: {
+    xs: `@media screen and (max-width: 575px)`,
+    sm: `@media screen and (min-width: 576px)`,
+    md: `@media screen and (min-width: 768px)`,
+    lg: `@media screen and (min-width: 992px)`,
+    xl: `@media screen and (min-width: 1200px)`,
+    xxl: `@media screen and (min-width: 1400px)`,
+  },
+};
 
 const App = () => {
   const [showChat, setShowChat] = useState(false);
@@ -47,21 +59,21 @@ const App = () => {
   };
 
   const Footer = ({ name }) => (
-    <FooterStyled>
+    <FooterStyled theme={styledTheme}>
       Copyright © {new Date().getFullYear()} {name}
     </FooterStyled>
   );
 
   return (
     <BrowserRouter>
-      <div className="App">
-        {isLoading ? (
-          <Loading color="white" text="Loading ..." />
-        ) : !isAuthenticated ? (
-          <Login loginWithRedirect={loginWithRedirect} />
-        ) : (
-          <>
-            <div>
+      <StyledThemeProvider theme={styledTheme}>
+        <div className="App">
+          {isLoading ? (
+            <Loading color="white" text="Loading ..." />
+          ) : !isAuthenticated ? (
+            <Login loginWithRedirect={loginWithRedirect} />
+          ) : (
+            <>
               {!showChat ? (
                 <InputRoom
                   handleRoomId={handleRoomId}
@@ -77,11 +89,11 @@ const App = () => {
                   isLoading={isLoading}
                 />
               )}
-            </div>
-          </>
-        )}
-        <Footer name="KNN." />
-      </div>
+            </>
+          )}
+          <Footer name="KNN." />
+        </div>
+      </StyledThemeProvider>
     </BrowserRouter>
   );
 };
@@ -97,4 +109,12 @@ const FooterStyled = styled.div`
   bottom: 0;
   left: 0;
   padding: 10px;
+
+  ${({ theme }) =>
+    theme.media.xs &&
+    css`
+      ${theme.media.xs} {
+        display: none;
+      }
+    `}
 `;

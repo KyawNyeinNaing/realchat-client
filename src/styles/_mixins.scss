@@ -1,0 +1,47 @@
+@import "./grid";
+
+$debug: "";
+@function debug($d: "") {
+  $debug: $debug + "» #{inspect($d)} \A" !global;
+  @return $debug;
+}
+@mixin debug($d) {
+  $debug: debug($d);
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include debug($breakpoint);
+}
+
+@mixin transition {
+  transition: all 320ms ease;
+}
+
+@mixin media($width, $screen) {
+  @media screen and ($width: $screen) {
+    @content;
+  }
+}
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == xs {
+    @media screen and (max-width: 575px) {
+      @content;
+    }
+  }
+  @if $breakpoint == sm {
+    @media screen and (min-width: 576px) {
+      @content;
+    }
+  }
+  @if $breakpoint == md {
+    @media screen and (min-width: 768px) {
+      @content;
+    }
+  }
+  @if $breakpoint == lg {
+    @media screen and (min-width: 992px) {
+      @content;
+    }
+  }
+}

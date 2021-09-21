@@ -45,8 +45,8 @@ const Chat = ({ socket, nickname, room, isLoading }) => {
 
   return (
     !isLoading && (
-      <div className="container d-flex justify-content-center">
-        <div className="card chat-card mt-5">
+      <div className="container chat-container sp-view">
+        <div className="card chat-card">
           <div className="d-flex flex-column justify-content-start p-3 adiv text-white">
             <div className="d-flex flex-row">
               <span className="d-block me-2">Live Chat</span>
